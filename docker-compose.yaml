@@ -1,0 +1,46 @@
+version: '3'
+services:
+  sm_crawler:
+    container_name: sm_crawler
+    network_mode: "host"
+    build: .
+    volumes:
+      - ./:/code
+    command: python -u /code/sm_crawler/crawler.py 
+    depends_on:
+      - mongodb
+      - chrome
+      - selenium-hub
+
+  mongodb:
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./db_mongo/db:/data/db
+      - ./db_mongo/log:/var/log/mongodb
+      - ./db_mongo/mongo:/etc/mongo
+    command: mongod --auth
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+
+  chrome:
+    image: selenium/node-chrome:4.5.0-20221004
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+
+  selenium-hub:
+    image: selenium/hub:4.5.0-20221004
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+    
