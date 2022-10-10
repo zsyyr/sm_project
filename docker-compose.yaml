@@ -6,7 +6,7 @@ services:
     build: .
     volumes:
       - ./:/code
-    command: python -u /code/sm_crawler/crawler.py 
+    command: python -u /code/sm_crawler/task_schedule.py 
     depends_on:
       - mongodb
       - chrome
