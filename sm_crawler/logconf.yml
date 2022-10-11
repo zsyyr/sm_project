@@ -8,7 +8,7 @@ formatters:
     datefmt: "%Y/%m/%d %H:%M:%S"
 
   tofile:
-    format: "%(asctime)s - %(name)s - %(levelname)-9s - %(filename)-8s : %(lineno)s line - %(message)s"
+    format: "%(asctime)s - %(name)s - %(levelname)-9s - %(message)s"
   
 handlers:
   sh:

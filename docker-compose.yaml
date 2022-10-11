@@ -1,7 +1,7 @@
 version: '3'
 services:
   sm_crawler:
-    container_name: sm_crawler
+    container_name: sm_crawler_docker
     network_mode: "host"
     restart: always
     build: .

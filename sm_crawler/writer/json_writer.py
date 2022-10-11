@@ -1,5 +1,5 @@
 import logging
-import json
+import json,os
 from .writer import Writer
 
 logger = logging.getLogger('crawler.json_writer')
@@ -11,6 +11,12 @@ class JsonWriter(Writer):
         
     def write_posts(self, file_name, posts):
         """将爬取的post写入json文件，以account为单位"""
+        try:
+            if not os.path.exists('/code/sm_crawler/data/json/'):
+                os.makedirs('/code/sm_crawler/data/json/')
+        except Exception as e:
+            logger.critical('Create json dir failed!') 
+            return
         with open(self.json_file_path+file_name+'_post.json', 'a', newline='\n', encoding='utf-8') as f:        
             for post in posts:
                 f.write(json.dumps(post.__dict__, ensure_ascii=False)+'\n')       

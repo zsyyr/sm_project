@@ -14,11 +14,18 @@ import writer.json_writer as json_writer
 import writer.mongo_writer as mongo_writer
 from driver import chrome_driver
 
-logging_path = '/code/sm_crawler/logconf.yml'
-with open(logging_path, "r", encoding='utf-8') as f:
-    dict_conf = yaml.safe_load(f)
-logging.config.dictConfig(dict_conf)
-logger = logging.getLogger('crwaler')
+
+try:
+    if not os.path.exists('/code/sm_crawler/log/'):
+        os.makedirs('/code/sm_crawler/log/')
+    logging_path = '/code/sm_crawler/logconf.yml'
+    with open(logging_path, "r", encoding='utf-8') as f:
+        dict_conf = yaml.safe_load(f)
+    logging.config.dictConfig(dict_conf)
+    logger = logging.getLogger('crwaler')
+except Exception as e:
+    print(e)
+    
 
 
 class Crawler:

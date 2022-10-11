@@ -8,11 +8,9 @@ dist/
 *.egg-info
 
 .idea
-
-
 *.log
 
-*/log/
-*/data/
+*/log/logconfdd.log
+*/data/json/*.json
 
-db_mongo/
+# db_mongo/
