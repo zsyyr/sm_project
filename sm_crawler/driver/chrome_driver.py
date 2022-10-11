@@ -50,31 +50,20 @@ class ChromeWebDriver(Driver):
         #                             "urls":["*.flv*","*.png","*.jpg*","*.jepg*","*.gif*"]})
 
     def get_selenium_grid_driver(self, selenium_grid_url):
-        # selenium_grid_url = "http://127.0.0.1:4444/wd/hub"
         CHROME= {"browserName": "chrome"}
         return webdriver.Remote(desired_capabilities=CHROME,command_executor=selenium_grid_url)
 
-    def vpn_config(self):
-        self.driver.execute_script("window.open();")
-        handles = self.driver.window_handles
-        self.driver.switch_to.window(handles[-1])
-        self.driver.get("extension://bblcccknbdbplgmdjnnikffefhdlobhp/login.html")        
-        self.driver.find_element_by_link_text("Login").click()      
-        # self.driver.find_element_by_xpath("//a[text()='Login']").send_keys(Keys.ENTER)
-        self.driver.find_element_by_id("email_l").send_keys("zmszsyyr@163.com")
-        self.driver.find_element_by_id("password_l").send_keys("vpn2020")
-        self.driver.find_element_by_id("btn_l").click()        
 
     def save_cookies(self):
         # time.sleep(3)
-        self._cookies_file = './data/cookies/cookies.txt'
-        with open('./data/cookies/cookies.txt','w') as f:
+        self._cookies_file = '/code/sm_crawler/data/cookies/cookies.txt'
+        with open('/code/sm_crawler/data/cookies/cookies.txt','w') as f:
         # 将cookies保存为json格式
             f.write(json.dumps(self.driver.get_cookies()))
     
     def load_cookies(self):
         self.driver.delete_all_cookies()
-        with open('./data/cookies/cookies.txt','r') as f:
+        with open('/code/sm_crawler/data/cookies/cookies.txt','r') as f:
         # 使用json读取cookies 注意读取的是文件 所以用load而不是loads
             cookies_list = json.load(f)
             # 方法1 将expiry类型变为int
@@ -111,18 +100,29 @@ class ChromeWebDriver(Driver):
                 self.driver.switch_to.window(window_handle)
                 self.driver.close()
         self.driver.switch_to.window(self.current_window_handle)
-        logger.info('Target url opende, previous url tags closed!')
+        logger.info('Target url opened, previous url tags closed!')
 
     def open_tab_by_url_with_cookies(self, website_url, timeout=3):   
-        logger.info(f'open url {website_url}')     
-        self.driver.switch_to.new_window('tab')
-        self.driver.implicitly_wait(timeout)        
-        self.driver.get(website_url)        #must open the target website befor add_cookies
-        self.load_cookies()
-        time.sleep(2)
-        self.driver.get(website_url)      #add cookies then reopen the website. driver.refresh() do not make sense!
-        time.sleep(timeout)
-        logger.info('url opende')
+        try:
+            logger.info(f'open url {website_url} useing cookies authorization.')     
+            self.driver.switch_to.new_window('tab')
+            self.driver.implicitly_wait(timeout)        
+            self.driver.get(website_url)        #must open the target website befor add_cookies
+            self.load_cookies()
+            time.sleep(2)
+            self.driver.get(website_url)      #add cookies then reopen the website. driver.refresh() do not make sense!
+            time.sleep(timeout)
+            logger.info(f'Url {website_url} authorized.')
+            self.current_window_handle = self.driver.current_window_handle
+            for window_handle in self.driver.window_handles:
+                if window_handle != self.current_window_handle:
+                    self.driver.switch_to.window(window_handle)
+                    self.driver.close()
+            self.driver.switch_to.window(self.current_window_handle)
+            logger.info('Target url opened, previous url tags closed!')
+
+        except:
+            logger.critical('Cookies are not fitted, chech cookies files.')
 
     def auto_scroll(self, distance=0):
         if distance:
@@ -131,7 +131,7 @@ class ChromeWebDriver(Driver):
             self.driver.execute_script("window.scrollTo(0 ,document.body.scrollHeight)")
    
     def close_tag(self):
-        logger.info('account page tag closed!')
+        logger.info('Account page tag closed!')
         self.driver.close()
 
     def close_driver(self):

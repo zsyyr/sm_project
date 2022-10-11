@@ -24,7 +24,7 @@ class MongoWriter(Writer):
             logger.exception(e)
         except pymongo.errors.ServerSelectionTimeoutError:
             logger.warning(
-                u'系统中可能没有安装或启动MongoDB数据库，请先根据系统环境安装或启动MongoDB，再运行程序')
+                f'系统中可能没有安装或启动MongoDB数据库，请先根据系统环境安装或启动MongoDB，再运行程序')
             sys.exit()
 
     def close_mongodb(self):
@@ -46,7 +46,7 @@ class MongoWriter(Writer):
                     collection.update_one({'id': post['uuid']}, {'$set': post})
         except pymongo.errors.ServerSelectionTimeoutError:
             logger.warning(
-                u'系统中可能没有安装或启动MongoDB数据库，请先根据系统环境安装或启动MongoDB，再运行程序')
+                f'系统中可能没有安装或启动MongoDB数据库，请先根据系统环境安装或启动MongoDB，再运行程序')
             sys.exit()
     def _comment_to_mongodb(self, collection_name, post_list):
         """将爬取的信息写入MongoDB数据库"""        
@@ -61,7 +61,7 @@ class MongoWriter(Writer):
                     collection.update_one({'id': post['uuid']}, {'$set': post})
         except pymongo.errors.ServerSelectionTimeoutError:
             logger.warning(
-                u'系统中可能没有安装或启动MongoDB数据库，请先根据系统环境安装或启动MongoDB，再运行程序')
+                f'系统中可能没有安装或启动MongoDB数据库，请先根据系统环境安装或启动MongoDB，再运行程序')
             sys.exit()
             
     def write_posts(self,collection, posts):
@@ -70,7 +70,7 @@ class MongoWriter(Writer):
         for w in posts:
             post_list.append(w.__dict__)
         self._post_to_mongodb(collection, post_list)
-        logger.info(u'%d posts has written to Mongodb.', len(posts))
+        logger.info(f'%d posts has written to Mongodb.', len(posts))
  
     def write_comments(self,collection, comments):
         """将爬取的信息写入MongoDB数据库"""
@@ -78,11 +78,11 @@ class MongoWriter(Writer):
         for w in comments:
             post_list.append(w.__dict__)
         self._comment_to_mongodb(collection, post_list)
-        logger.info(u'%d comments has written to Mongodb.', len(comments))
+        logger.info(f'%d comments has written to Mongodb.', len(comments))
  
     def write_account(self, account):
         """将爬取的用户信息写入MongoDB数据库"""
         self.user = account
         user_list = [account.__dict__]
         self._post_to_mongodb('account', user_list)
-        logger.info(u'account %s has written to Mongodb.', account.nickname)
+        logger.info(f'account %s has written to Mongodb.', account.nickname)

@@ -5,7 +5,7 @@ if sys == 'Linux':
     
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import NoSuchElementException, InvalidSessionIdException
+from selenium.common.exceptions import NoSuchElementException, InvalidSessionIdException, StaleElementReferenceException
 import logging
 import datetime, time
 import datetime_util
@@ -212,7 +212,7 @@ class FbExtractor(Extractor):
                     test_content = post_el.find_element(By.XPATH, self.post_wait_time_hiden_tag_xpath)   # a post's div may be find while it's elements are all unavailable, so must check the post's time element as well.
                 self.post_failed = 0
                 break                
-            except NoSuchElementException:
+            except (NoSuchElementException, StaleElementReferenceException):
                 logger.warning(f"Waiting:sleep for {scroll_detect_wait_time} seconds waiting for the post loading, detect time is {SCROLL_DETECT_TIME}")
                 time.sleep(scroll_detect_wait_time)
                 self.post_failed = 1   # if the element is unavailable, mark it and then the account crawling will stop.

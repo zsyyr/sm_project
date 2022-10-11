@@ -76,6 +76,9 @@ def get_comment_threshold(config):
 def get_comment_max_count(config):
     return config['comment_config']['max_count']
 
+def get_authorization_config(config):
+    return config['authorization']['browser_auto_auth']
+
 if __name__ == '__main__':
     
     config = get_yaml_config()

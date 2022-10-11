@@ -3,6 +3,7 @@ services:
   sm_crawler:
     container_name: sm_crawler
     network_mode: "host"
+    restart: always
     build: .
     volumes:
       - ./:/code
@@ -13,7 +14,8 @@ services:
       - selenium-hub
 
   mongodb:
-    image: mongo:latest
+    image: mongo:5.0
+    container_name: sm_docker_mongo
     restart: always
     ports:
       - 27017:27017
@@ -29,6 +31,7 @@ services:
   chrome:
     image: selenium/node-chrome:4.5.0-20221004
     shm_size: 2gb
+    restart: always
     depends_on:
       - selenium-hub
     environment:
@@ -39,6 +42,7 @@ services:
   selenium-hub:
     image: selenium/hub:4.5.0-20221004
     container_name: selenium-hub
+    restart: always
     ports:
       - "4442:4442"
       - "4443:4443"

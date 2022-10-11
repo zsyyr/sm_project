@@ -28,6 +28,11 @@ scroll_detect_wait_time: 30
 
 # platforms: ['FB']
 
+
+authorization:
+  browser_auto_auth: 1    # if 0, use cookies to authorize.
+  # cookies_auth: 1
+
 platforms: ['Weibo']
 
 FB:

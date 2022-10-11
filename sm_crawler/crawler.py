@@ -29,6 +29,7 @@ class Crawler:
         self.remote_driver_selenium_grid_url = config_parser.get_remote_driver_selenium_grid_url(self.config)
         self.remote_debugger_flag = config_parser.get_remote_debugger_flag(self.config)
         self.remote_debugger_address = config_parser.get_remote_debugger_address(self.config)
+        self.authorization_flag = config_parser.get_authorization_config(self.config)
         self.start_hour = config_parser.get_everyday_starthour(self.config)
         self.stop_date = config_parser.get_stop_date(self.config)
         self.global_wait_seconds_scale = config_parser.get_global_wait_scale(self.config)
@@ -96,7 +97,10 @@ class Crawler:
             self.writers.append(mongo_writer.MongoWriter(self.config['db_store']['mongo_db']['connection_string']))   
 
     def open_url(self, website_url):
-        self.webdriver.open_tab_by_url(website_url, self.implicitly_wait_second)
+        if self.authorization_flag:
+            self.webdriver.open_tab_by_url(website_url, self.implicitly_wait_second)
+        else:
+            self.webdriver.open_tab_by_url_with_cookies(website_url, self.implicitly_wait_second)
 
     def check_posts_content(self, post_list):
         return [post.content for post in post_list]
