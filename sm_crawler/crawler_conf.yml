@@ -6,7 +6,7 @@ web_browser: "chrome"                   #edge\firefox
 
 #use selenium grid docker, do not need chromedriver. open http://127.0.0.1:4444/ can see the selenium gird ui, screen password is "secret".
 remote_driver:
-  flag: 1
+  flag: 0
   selenium_grid_url: "http://127.0.0.1:4444/wd/hub" 
 
 #use chrome with debugger launching mode, need chromedriver which should match the chrome browser's version.
@@ -18,7 +18,7 @@ remote_debugger:
     windows: ".\\chrome.exe --remote-debugging-port=9222 --user-data-dir='D:\\temp'"
 
 webdriver_tool_path:
-  chrome: "/code/sm_crawler/driver_tools/chromedriver"
+  chrome: "/code/sm_crawler/driver_tools/chromedriver-105"
   edge: 
   firefox: 
 
@@ -30,10 +30,10 @@ scroll_detect_wait_time: 30
 
 
 authorization:
-  browser_auto_auth: 1    # if 0, use cookies to authorize.
+  browser_auto_auth: 0    # if 0, use cookies to authorize.
   # cookies_auth: 1
 
-platforms: ['Weibo']
+platforms: ['FB']
 
 FB:
   accounts: ['cnn']
@@ -92,7 +92,7 @@ wait_config:
 
 db_store:
   mongo_db:
-    flag: 0
+    flag: 1
     connection_string: "mongodb://localhost:27017/"
 
 json_store: 

@@ -16,6 +16,7 @@ from driver import chrome_driver
 
 
 try:
+    
     if not os.path.exists('/code/sm_crawler/log/'):
         os.makedirs('/code/sm_crawler/log/')
     logging_path = '/code/sm_crawler/logconf.yml'
