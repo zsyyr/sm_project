@@ -30,7 +30,7 @@ scroll_detect_wait_time: 30
 
 
 authorization:
-  browser_auto_auth: 0    # if 0, use cookies to authorize.
+  browser_auto_auth: 1    # if 0, use cookies to authorize.
   # cookies_auth: 1
 
 platforms: ['FB']
@@ -40,7 +40,7 @@ FB:
   cookie: ""
   url: "https://www.facebook.com/"
 
-Twitter:
+TW:
   accounts: ['cnn', 'bbc']
   cookie: ""
   url: "https://www.twitter.com/"
@@ -50,13 +50,13 @@ YT:
   cookie: ""
   url: ""
 
-Weibo:
+WB:
   accounts: ['u/5044281310']
   cookie: ""
   url: "https://weibo.com/"
 
 
-everyday_start_hour: '20:00'
+daily_start_hour: '20:00'
 
 stop_date: 2    #不建议修改，一般设置为2天：当天的post存入today库中，作为判断当天有无热点新闻之用；第二天的存入yesterday库中，因为其up、comment、retweet数量已经稳定。
 

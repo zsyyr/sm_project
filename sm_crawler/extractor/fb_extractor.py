@@ -172,7 +172,7 @@ class FbExtractor(Extractor):
                             comment.raw_str = comment_el.text
                             util.parse_post_comment_str(comment)
                             if comment.publish_time:
-                                comment.publish_time = datetime_util.parse_time(comment.publish_time)
+                                comment.publish_time = datetime_util.parse_time(comment.publish_time, datetime.datetime.now())
                             if comment.content:
                                 comment.uuid = str(util.gen_uuid(comment.content))
                             else:
@@ -249,7 +249,7 @@ class FbExtractor(Extractor):
                     publish_time_str = account.latest_time_str
                 else:
                     account.latest_time_str = publish_time_str
-                post.publish_time = datetime_util.parse_time(publish_time_str)
+                post.publish_time = datetime_util.parse_time(publish_time_str, datetime.datetime.now())
                 DATE_CHECK, post.today_flag = datetime_util.check_date(post.publish_time, account)
             except Exception as e:
                 post.publish_time = ''

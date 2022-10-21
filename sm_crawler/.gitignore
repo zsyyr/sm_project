@@ -11,6 +11,6 @@ dist/
 *.log
 
 */log/logconfdd.log
-*/data/json/*.json
+*/data/
 
 db_mongo/

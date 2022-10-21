@@ -41,7 +41,7 @@ def get_account_urls(config):
         return account_urls
 
 def get_everyday_starthour(config):
-    return config['everyday_start_hour']
+    return config['daily_start_hour']
 
 def get_global_wait_threshold(config):
     return config['wait_config']['global_wait_seconds']['threshold']

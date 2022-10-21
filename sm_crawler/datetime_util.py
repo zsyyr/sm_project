@@ -46,7 +46,7 @@ def check_date(post_date_str, account):
         logger.error(e)
         return True, 1
 
-def parse_time(time_str, crawling_date=datetime.now()):    
+def parse_time(time_str, crawling_date):    
     '''
     crawl_date_str: "2022-03-23 14:05:00" '%Y-%m-%d %H:%M:%S'
     raw_date:       "23 March at 14:05"

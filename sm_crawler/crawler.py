@@ -154,9 +154,9 @@ class Crawler:
         for account in self.account_list:
             if account.platform == 'FB':
                 self.extractor = fb_extractor.FbExtractor(self.webdriver.driver)                
-            if account.platform == 'Twitter':
+            if account.platform == 'TW':
                 self.extractor = tw_extractor.TwExtractor(self.webdriver.driver)
-            if account.platform == 'Weibo':                
+            if account.platform == 'WB':                
                 self.extractor = wb_extractor.WbExtractor(self.webdriver.driver)
             
             account.start_time = datetime_util.get_now_time()
