@@ -1,10 +1,11 @@
 class Account():
-    def __init__(self, name, platform, url, stop_date):
+    def __init__(self, name, platform, url, stop_date, crawling_comment_flag=1):
         self.name = name
         self.nickname = ''
         self.id = 0
         self.platform = platform
         self.url = url
+        self.crawling_comment_flag = crawling_comment_flag
         self.gender = ''
         self.location = ''
         self.birthday = ''

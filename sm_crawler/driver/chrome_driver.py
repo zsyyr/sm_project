@@ -1,5 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
+import crawler_exception as ce
 import time
 import logging
 import json
@@ -63,15 +66,8 @@ class ChromeWebDriver(Driver):
     
     def load_cookies(self):
         self.driver.delete_all_cookies()
-        with open('/code/sm_crawler/data/cookies/cookies.txt','r') as f:
-        # 使用json读取cookies 注意读取的是文件 所以用load而不是loads
-            cookies_list = json.load(f)
-            # 方法1 将expiry类型变为int
-            # for cookie in cookies_list:
-            #     # 并不是所有cookie都含有expiry 所以要用dict的get方法来获取
-            #     if isinstance(cookie.get('expiry'), float):
-            #         cookie['expiry'] = int(cookie['expiry'])
-            #     self.driver.add_cookie(cookie)
+        with open('/code/sm_crawler/data/cookies/cookies.txt','r') as f:     
+            cookies_list = json.load(f)         
             for cookie in cookies_list:
                 # 该字段有问题所以删除就可以 
                 if 'expiry' in cookie:
@@ -80,15 +76,37 @@ class ChromeWebDriver(Driver):
 
     def delete_all_cookies(self):
         self.driver.delete_all_cookies()    #for clean cache
-        
-    # def get_cookies(self):
-    #     if(os.path.exists(self._cookies_file) == False) :
-    #         self.save_cookies()
-    #     else :
-    #         self.load_cookies()
-
-    def open_tab_by_url(self, website_url, timeout=3):   
-        logger.info(f'open url {website_url}')     
+                
+    def login_with_email_pwd(self, sm_account):
+        try:
+            login_button = self.driver.find_element(By.NAME, "login")
+            if login_button:            
+                self.driver.execute_script('document.getElementsByName("email")[0].value=""')
+                time.sleep(1)           
+                email_input = self.driver.find_element(By.NAME, "email")            
+                email_input.send_keys(sm_account['email'])
+                pwd_input = self.driver.find_element(By.NAME, "pass")
+                pwd_input.clear()
+                time.sleep(1)            
+                pwd_input.send_keys(sm_account['pwd'])
+                login_button.click()
+                time.sleep(10)
+                try:
+                    self.driver.find_element(By.NAME, "login")
+                    logger.critical('Login useing email and pwd failed!') 
+                    raise ce.LoginException
+                except NoSuchElementException: 
+                    return True
+                # return check_login(driver,account.name)
+        except NoSuchElementException: 
+            return True
+        except ce.LoginException as e:
+            logger.exception(e)
+            logger.critical('Login useing email and pwd failed!') 
+            raise ce.LoginException
+    
+    def open_tab_by_url(self, website_url, timeout=1):   
+        logger.info(f'Open url {website_url}')     
         self.driver.switch_to.new_window('tab')
         self.driver.implicitly_wait(timeout)
         self.driver.get(website_url)
@@ -104,7 +122,7 @@ class ChromeWebDriver(Driver):
 
     def open_tab_by_url_with_cookies(self, website_url, timeout=3):   
         try:
-            logger.info(f'open url {website_url} useing cookies authorization.')     
+            logger.info(f'Open url {website_url} useing cookies authorization.')     
             self.driver.switch_to.new_window('tab')
             self.driver.implicitly_wait(timeout)        
             self.driver.get(website_url)        #must open the target website befor add_cookies
@@ -120,9 +138,9 @@ class ChromeWebDriver(Driver):
                     self.driver.close()
             self.driver.switch_to.window(self.current_window_handle)
             logger.info('Target url opened, previous url tags closed!')
-
         except:
             logger.critical('Cookies are not fitted, chech cookies files.')
+            raise Exception
 
     def auto_scroll(self, distance=0):
         if distance:

@@ -1,15 +1,15 @@
 version: '3'
 services:
-  # sm_crawler:
-  #   container_name: sm_crawler_docker
-  #   network_mode: "host"
-  #   restart: always
-  #   build: .
-  #   volumes:
-  #     - ./:/code
-  #   command: python -u /code/sm_crawler/task_schedule.py -m browser_debug_docker -a browser_auto -t daily_task
-  #   depends_on:
-  #     - mongodb
+  sm_crawler:
+    container_name: sm_crawler_docker
+    network_mode: "host"
+    restart: always
+    build: .
+    volumes:
+      - ./:/code
+    command: python -u /code/sm_crawler/task_schedule.py -m browser_debug_docker -a browser_auto -t daily_task
+    depends_on:
+      - mongodb
       
 
   mongodb:
@@ -17,7 +17,7 @@ services:
     container_name: sm_docker_mongo
     restart: always
     ports:
-      - 27089:27017
+      - 27017:27017
     volumes:
       - ./db_mongo/db:/data/db
       - ./db_mongo/log:/var/log/mongodb

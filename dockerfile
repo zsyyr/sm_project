@@ -9,7 +9,7 @@ RUN apt-get update
 RUN apt-get install -y libglib2.0-0 libnss3 libgconf-2-4 libfontconfig1
 
 ENV PYTHONPATH "${PYTHONPATH}:/code/sm_crawler"
-
+ENV TZ Asia/Shanghai
 # WORKDIR /code
 
 # CMD ["python","sm_crawler/crawler.py"] 

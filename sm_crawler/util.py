@@ -7,8 +7,18 @@ import random
 import string
 import logging
 import re
+import os
 
 logger = logging.getLogger('crwaler.util')
+
+def parse_prefix_path(crawling_mode):
+    current_path = os.getcwd() + os.sep
+    path_mode_dict = {
+        'browser_debug': current_path,
+        'browser_debug_docker': '/code/sm_crawler/',
+        'selenium_grid_docker': '/code/sm_crawler/',
+    }
+    return path_mode_dict[crawling_mode]
 
 class Singleton(object):
     def __init__(self, cls):
@@ -32,8 +42,8 @@ def dump_comment_2json(filename, comments):
         json.dump(comments, f, ensure_ascii=False)
 
 def gen_uuid(uuid_str):
-    return uuid.uuid3(uuid.NAMESPACE_OID, uuid_str[:8]) \
-                    if len(uuid_str)>8 else uuid.uuid3(uuid.NAMESPACE_OID, uuid_str)
+    return str(uuid.uuid3(uuid.NAMESPACE_OID, uuid_str[:8])) \
+                    if len(uuid_str)>8 else str(uuid.uuid3(uuid.NAMESPACE_OID, uuid_str))
 
 
 def parse_number(str_number):

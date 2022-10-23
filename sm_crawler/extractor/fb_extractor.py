@@ -25,6 +25,7 @@ class FbExtractor(Extractor):
         self.element_index = 0 
         self.post_failed = 0 # mark whether a post div and its time element is available.
         self.post_list_xpath = '//div[@class="x1t2pt76 x193iq5w xl56j7k x78zum5 x1qjc9v5"]/div/div[@class="xh8yej3"]/div'
+        self.post_list_figure_xpath = '//div[@class="x9f619 x1n2onr6 x1ja2u2z xeuugli xs83m0k x1xmf6yo x1emribx x1e56ztr x1i64zmx xjl7jj x19h7ccj xu9j1y6 x7ep2pv"]/div[2]/div'
         self.post_sibling_el_xpath = './following-sibling::div[1]' 
         self.post_time_el_xpath = './/span[@class="x4k7w5x x1h91t0o x1h9r5lt x1jfb8zj xv2umb2 x1beo9mf xaigb6o x12ejxvf x3igimt xarpa2k xedcshv x1lytzrv x1t2pt76 x7ja8zs x1qrby5j"]/a/span'
         self.post_time_chars_xpath = './/span[@class="x16dsc37 x10wlt62 x6ikm8r x1rg5ohu xt0b8zv"]/span/span'
@@ -44,7 +45,7 @@ class FbExtractor(Extractor):
         
     def extract_post_element_list(self):
         try:
-            return self.driver.find_elements(By.XPATH, self.post_list_xpath)
+            return self.driver.find_elements(By.XPATH, self.post_list_xpath+'|'+self.post_list_figure_xpath)
         except Exception as e:
             logger.exception(e)
             return []
@@ -224,17 +225,18 @@ class FbExtractor(Extractor):
         return post_el                  # maybe a div element or None when the net is unstable.
         
 
-    def extract_account_posts(self, account, global_wait_threshold, global_wait_seconds_scale, comment_threshold, comment_max_count, scroll_detect_wait_time):
+    def extract_account_posts(self, account, config):
         post_list = []
         comment_list = []
         DATE_CHECK = True
         WAIT_CHECK = True
-        logger.info('Useing fb extractor, begin to extract posts.') 
         if self.post_el == None:
-            self.post_el = self.get_post_el_by_waiting_check(self.driver, self.post_list_xpath, scroll_detect_wait_time)
+            self.post_el = self.get_post_el_by_waiting_check(self.driver, self.post_list_xpath, config.scroll_detect_wait_time)
             if self.post_failed:
-                logger.critical('Fail to get the posts, crawling exit anomally!')
-                return post_list, comment_list, DATE_CHECK, False
+                self.post_el = self.get_post_el_by_waiting_check(self.driver, self.post_list_figure_xpath, config.scroll_detect_wait_time)
+                if self.post_failed:
+                    logger.critical('Fail to get the posts, crawling exit anomally!')
+                    return post_list, comment_list, DATE_CHECK, False
                 
         while True:
             post_start = time.perf_counter()
@@ -282,13 +284,13 @@ class FbExtractor(Extractor):
             else:
                 post.uuid = str(util.gen_uuid(util.get_rand_char(8)))
             post.account = account.name
-            if post.today_flag==0 and post.comment_num>comment_threshold:
+            if account.crawling_comment_flag and post.today_flag==0 and post.comment_num>config.comment_threshold:
                 post.comment_flag = 1
-                comment_list.extend(self.extract_post_comment(self.post_el, post.uuid, comment_max_count))  
+                comment_list.extend(self.extract_post_comment(self.post_el, post.uuid, config.comment_max_count))  
             post_list.append(post)
             post_end = time.perf_counter()
             logger.debug(f'******runing time of extracting a post: {post_end-post_start}')
-            self.post_el = self.get_post_el_by_waiting_check(self.post_el, self.post_sibling_el_xpath, scroll_detect_wait_time)
+            self.post_el = self.get_post_el_by_waiting_check(self.post_el, self.post_sibling_el_xpath, config.scroll_detect_wait_time)
             WAIT_CHECK = False if self.post_failed else True    # check if the post is available or the net is too unstable to proceed.
             if len(post_list) > 5 or not DATE_CHECK or not WAIT_CHECK:
                 return post_list, comment_list, DATE_CHECK, WAIT_CHECK

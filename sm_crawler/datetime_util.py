@@ -118,6 +118,36 @@ def parse_time(time_str, crawling_date):
         logging.exception(e)
         return ''
 
+def parse_yt_time(time_str, crawling_date):    
+    '''
+    TODO: year month
+    '''
+    crawl_year = str(crawling_date.year)
+    try:
+        s_list = time_str.split()
+        # print(s_list)    
+        if time_str == "just now":
+            return crawling_date.strftime(r'%Y-%m-%d') 
+        if 'second' in s_list[1]:    
+            delta = timedelta(seconds=int(s_list[0]))      
+            n_days = crawling_date - delta      
+            return n_days.strftime(r'%Y-%m-%d') 
+        if 'minute' in s_list[1]:    
+            delta = timedelta(minutes=int(s_list[0]))      
+            n_days = crawling_date - delta      
+            return n_days.strftime(r'%Y-%m-%d') 
+        if 'hour' in s_list[1]:    
+            delta = timedelta(hours=int(s_list[0]))      
+            n_days = crawling_date - delta      
+            return n_days.strftime(r'%Y-%m-%d') 
+        if 'day' in s_list[1]:    
+            delta = timedelta(hours=int(s_list[0])*24)      
+            n_days = crawling_date - delta      
+            return n_days.strftime(r'%Y-%m-%d')   
+    except Exception as e:
+        logging.exception(e)
+        return ''
+
 def global_wait(account, global_wait_threshold, wait_seconds_scale):      
     if time_miner_seconds(datetime.now(), account.start_time) > global_wait_threshold:
         sleep_time = random.randint(wait_seconds_scale[0], wait_seconds_scale[1])
