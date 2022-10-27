@@ -105,9 +105,9 @@ class Crawler:
             #     logger.critical('Post content crawling failed, crawling stopped anomally!')
             #     break
             if post_list:
-                self.write_post(account.platform, post_list) 
+                self.write_post(account, post_list) 
             if comment_list:
-                self.write_comments(account.platform, comment_list)             
+                self.write_comments(account, comment_list)             
             account.crawling_post_number += len(post_list) 
              
             if not DATE_CHECK:

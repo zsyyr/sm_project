@@ -5,5 +5,5 @@ build/
 dist/
 *.egg-info
 .idea
-*.log
+
 db_mongo/

@@ -64,20 +64,20 @@ class MongoWriter(Writer):
                 f'系统中可能没有安装或启动MongoDB数据库，请先根据系统环境安装或启动MongoDB，再运行程序')
             sys.exit()
             
-    def write_posts(self,collection, posts):
+    def write_posts(self,account, posts):
         """将爬取的信息写入MongoDB数据库"""
         post_list = []
         for w in posts:
             post_list.append(w.__dict__)
-        self._post_to_mongodb(collection, post_list)
+        self._post_to_mongodb(account.platform, post_list)
         logger.info(f'%d posts has written to Mongodb.', len(posts))
  
-    def write_comments(self,collection, comments):
+    def write_comments(self,account, comments):
         """将爬取的信息写入MongoDB数据库"""
         post_list = []
         for w in comments:
             post_list.append(w.__dict__)
-        self._comment_to_mongodb(collection, post_list)
+        self._comment_to_mongodb(account.platform, post_list)
         logger.info(f'%d comments has written to Mongodb.', len(comments))
  
     def write_account(self, account):
