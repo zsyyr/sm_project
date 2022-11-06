@@ -24,24 +24,24 @@ webdriver_tool_path:
 
 implicitly_wait_second: 5
 
-scroll_detect_wait_time: 3
+scroll_detect_wait_time: 30
 
 authorization:
   browser_auto: 1    # login automatic with google account saving by browser 
   email_pwd: 1
   cookies: 1
 
-platform_list: ['FB']
+platform_list: ['FB', 'TW']
 
 FB:
-  accounts: ['cnn']
-  sm_account_email: "emersonanthony20202020@gmail.com"
-  password: "emerson2020"
+  accounts: ['cnn', 'bbc', 'Reuters', 'FoxNews', 'demorgen', 'hln.be', 'nieuwsblad.be', 'destandaard']
+  sm_account_email: ""
+  password: ""
   cookies_file: ""
   url: "https://www.facebook.com/"
 
 TW:
-  accounts: ['cnn', 'bbc']
+  accounts: ['CNN', 'BBCWorld', 'business', 'POTUS', 'RishiSunak', 'SpeakerPelosi', 'BarackObama', 'MSNBC', 'nytimes', 'FoxNews', 'alexanderdecroo', 'tijd', 'demorgen', 'HLN_BE', 'VTMNIEUWS', 'Nieuwsblad_be', 'vrtnws', 'destandaard']
   sm_account_email: ""
   password: ""
   cookies_file: ""
@@ -62,57 +62,102 @@ WB:
   url: "https://weibo.com/"
 
 
-daily_start_hour: '22:00'
+daily_start_hour: '09:25'
 
 stop_date: 2    #不建议修改，一般设置为2天：当天的post存入today库中，作为判断当天有无热点新闻之用；第二天的存入yesterday库中，因为其up、comment、retweet数量已经稳定。
 
 single_task_config:                     #single task
   accounts:
-    bolsonaro:
-      name: 'jairmessias.bolsonaro'
-      platform: 'FB'
-      url: 'https://www.facebook.com/jairmessias.bolsonaro'  
-      stop_date: 3
+    search-china:
+      name: 'search-china'
+      platform: 'TW'
+      url: 'https://twitter.com/search?q=china&src=typed_query'  
+      stop_date: 200
       crawling_comment_flag: 0
       date:
         begin_date: ""
-        end_date: ""
-    cnn:
-      name: 'cnn'
-      platform: 'FB'
-      url: 'https://www.facebook.com/cnn'  
-      stop_date: 2
+        end_date: ""      
+    search-belgium:
+      name: 'search-belgium'
+      platform: 'TW'
+      url: 'https://twitter.com/search?q=Belgium&src=typed_query&f=top'  
+      stop_date: 200
       crawling_comment_flag: 0
       date:
-        since_date: ""
-        end_date: ""
-    bbc:
-      name: 'bbc'
-      platform: 'FB'
-      url: 'https://www.facebook.com/bbc'  
-      stop_date: 2
-      crawling_comment_flag: 0
-      date:
-        since_date: ""
-        end_date: ""
-    debate:
-      name: 'Lula'
-      platform: 'YT'
-      url: 'https://www.youtube.com/watch?v=bX5e1C38Dxg'  
-      stop_date: 2
-      crawling_comment_flag: 0
-      date:
-        since_date: ""
-        end_date: ""    
-    lula:
-      name: 'Lula'
-      platform: 'FB'
-      url: 'https://www.facebook.com/Lula'  
-      stop_date: 2
-      crawling_comment_flag: 0
-      date:
-        since_date: ""
-        end_date: ""
+        begin_date: ""
+        end_date: "" 
+    # POTUS:
+    #   name: 'POTUS'
+    #   platform: 'TW'
+    #   url: 'https://twitter.com/POTUS'  
+    #   stop_date: 10
+    #   crawling_comment_flag: 0
+    #   date:
+    #     begin_date: ""
+    #     end_date: ""
+    # jrpsaki:
+    #   name: 'jrpsaki'
+    #   platform: 'TW'
+    #   url: 'https://twitter.com/jrpsaki'  
+    #   stop_date: 10
+    #   crawling_comment_flag: 0
+    #   date:
+    #     begin_date: ""
+    #     end_date: ""
+    # cnnbrasil:
+    #   name: 'cnnbrasil'
+    #   platform: 'FB'
+    #   url: 'https://www.facebook.com/cnnbrasil'  
+    #   stop_date: 3
+    #   crawling_comment_flag: 1
+    #   date:
+    #     begin_date: ""
+    #     end_date: ""
+    # bolsonaro:
+    #   name: 'jairmessias.bolsonaro'
+    #   platform: 'FB'
+    #   url: 'https://www.facebook.com/jairmessias.bolsonaro'  
+    #   stop_date: 3
+    #   crawling_comment_flag: 0
+    #   date:
+    #     begin_date: ""
+    #     end_date: ""
+    # cnn:
+    #   name: 'cnn'
+    #   platform: 'FB'
+    #   url: 'https://www.facebook.com/cnn'  
+    #   stop_date: 2
+    #   crawling_comment_flag: 0
+    #   date:
+    #     since_date: ""
+    #     end_date: ""
+    # bbc:
+    #   name: 'bbc'
+    #   platform: 'FB'
+    #   url: 'https://www.facebook.com/bbc'  
+    #   stop_date: 2
+    #   crawling_comment_flag: 0
+    #   date:
+    #     since_date: ""
+    #     end_date: ""
+    # debate:
+    #   name: 'Lula'
+    #   platform: 'YT'
+    #   url: 'https://www.youtube.com/watch?v=bX5e1C38Dxg'  
+    #   stop_date: 2
+    #   crawling_comment_flag: 0
+    #   date:
+    #     since_date: ""
+    #     end_date: ""    
+    # lula:
+    #   name: 'Lula'
+    #   platform: 'FB'
+    #   url: 'https://www.facebook.com/Lula'  
+    #   stop_date: 2
+    #   crawling_comment_flag: 0
+    #   date:
+    #     since_date: ""
+    #     end_date: ""
     
 
 comment_config:

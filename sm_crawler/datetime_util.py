@@ -46,6 +46,22 @@ def check_date(post_date_str, account):
         logger.error(e)
         return True, 1
 
+# TODO:fix time zone
+def parse_tz():
+    pass
+
+
+def parse_tw_time(time_str, crawling_date):
+    '''
+    2022-11-01T11:31:14.000Z
+    '''
+    try:
+        return time_str.split('T')[0]
+    except:
+        return ''
+        
+
+
 def parse_time(time_str, crawling_date):    
     '''
     crawl_date_str: "2022-03-23 14:05:00" '%Y-%m-%d %H:%M:%S'

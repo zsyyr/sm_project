@@ -1,6 +1,6 @@
 import logging
 import logging.config
-import sys
+import time
 import extractor.fb_extractor as fb_extractor
 import extractor.tw_extractor as tw_extractor
 import extractor.yt_extractor as yt_extractor
@@ -125,21 +125,41 @@ class Crawler:
         return posts_number
     
     def start(self):
-        self.init_accounts()
-        self.init_driver()
-        self.init_writers()
+        try:
+            self.init_accounts()
+            self.init_driver()
+            self.init_writers()
+        except ce.ConfigException as e:
+            logger.exception(e)
+            logger.critical('Config parse failed!')
+        except ce.StoreException as e:
+            logger.exception(e)
+            logger.critical('Storage failed!')
         for account in self.account_list:
-            if account.platform == 'FB':
-                self.extractor = fb_extractor.FbExtractor(self.webdriver.driver)                
-            if account.platform == 'TW':
-                self.extractor = tw_extractor.TwExtractor(self.webdriver.driver)
-            if account.platform == 'YT':                
-                self.extractor = yt_extractor.YtExtractor(self.webdriver.driver)
-            if account.platform == 'WB':                
-                self.extractor = wb_extractor.WbExtractor(self.webdriver.driver)
-            account.start_time = datetime_util.get_now_time()
-            self.open_url(account)
-            self.get_one_account_posts(account)
+            try:
+                if account.platform == 'FB':
+                    self.extractor = fb_extractor.FbExtractor(self.webdriver.driver)                
+                if account.platform == 'TW':
+                    self.extractor = tw_extractor.TwExtractor(self.webdriver.driver)
+                if account.platform == 'YT':                
+                    self.extractor = yt_extractor.YtExtractor(self.webdriver.driver)
+                if account.platform == 'WB':                
+                    self.extractor = wb_extractor.WbExtractor(self.webdriver.driver)
+                account.start_time = datetime_util.get_now_time()
+                self.open_url(account)
+                self.get_one_account_posts(account)
+            except ce.LoginException as e:
+                logger.exception(e)
+                logger.critical('Login failed!')
+            except ce.StoreException as e:
+                logger.exception(e)
+                logger.critical('Storage failed!')
+            except Exception as e:
+                logger.exception(e)
+                logger.critical(f'Crawling {account.name} failed!')
+            finally:
+                time.sleep(5)
+                
             
     def end(self):
         total_posts_number = self.get_crawling_post_number()
@@ -151,19 +171,10 @@ def main(config):
         crawler = Crawler(config)
         logger.info('Start crawler procedure.')        
         crawler.start() 
-        crawler.end() 
-    except ce.ConfigException as e:
-        logger.exception(e)
-        sys.exit()
-    except ce.LoginException as e:
-        logger.exception(e)
-        sys.exit()
-    except ce.StoreException as e:
-        logger.exception(e)
-        sys.exit()
+        crawler.end()
     except Exception as e:
         logger.exception(e)
-        sys.exit()
+        logger.critical('Crawling failed!')
 
 
 if __name__ == '__main__':
