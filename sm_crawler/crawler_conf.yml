@@ -18,7 +18,7 @@ remote_debugger:
     windows: ".\\chrome.exe --remote-debugging-port=9222 --user-data-dir='D:\\temp'"
 
 webdriver_tool_path:
-  chrome: "driver_tools/chromedriver-105"
+  chrome: "driver_tools/chromedriver"
   edge: 
   firefox: 
 
@@ -68,6 +68,15 @@ stop_date: 2    #不建议修改，一般设置为2天：当天的post存入toda
 
 single_task_config:                     #single task
   accounts:
+    cnn:
+      name: 'cnn'
+      platform: 'FB'
+      url: 'https://www.facebook.com/cnn'  
+      stop_date: 2
+      crawling_comment_flag: 1
+      date:
+        since_date: ""
+        end_date: ""
     search-china:
       name: 'search-china'
       platform: 'TW'
@@ -122,15 +131,7 @@ single_task_config:                     #single task
     #   date:
     #     begin_date: ""
     #     end_date: ""
-    # cnn:
-    #   name: 'cnn'
-    #   platform: 'FB'
-    #   url: 'https://www.facebook.com/cnn'  
-    #   stop_date: 2
-    #   crawling_comment_flag: 0
-    #   date:
-    #     since_date: ""
-    #     end_date: ""
+    # 
     # bbc:
     #   name: 'bbc'
     #   platform: 'FB'
@@ -161,7 +162,7 @@ single_task_config:                     #single task
     
 
 comment_config:
-  threshold: 500                        #crawl comment if comment number larger than threshold
+  threshold: 50                        #crawl comment if comment number larger than threshold
   max_count: 200
 
 wait_config:
