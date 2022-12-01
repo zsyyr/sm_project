@@ -24,22 +24,22 @@ class FbExtractor(Extractor):
         self.post_el = None
         self.element_index = 0 
         self.post_failed = 0 # mark whether a post div and its time element is available.
-        self.post_list_xpath = '//div[@class="x1t2pt76 x193iq5w xl56j7k x78zum5 x1qjc9v5"]/div/div[@class="xh8yej3"]/div'
+        self.post_list_xpath = '//div[@class="x1qjc9v5 x78zum5 xl56j7k x193iq5w x1t2pt76"]/div/div[@class="xh8yej3"]/div'
         self.post_list_figure_xpath = '//div[@class="x9f619 x1n2onr6 x1ja2u2z xeuugli xs83m0k x1xmf6yo x1emribx x1e56ztr x1i64zmx xjl7jj x19h7ccj xu9j1y6 x7ep2pv"]/div[2]/div'
         self.post_sibling_el_xpath = './following-sibling::div[1]' 
-        self.post_time_el_xpath = './/span[@class="x4k7w5x x1h91t0o x1h9r5lt x1jfb8zj xv2umb2 x1beo9mf xaigb6o x12ejxvf x3igimt xarpa2k xedcshv x1lytzrv x1t2pt76 x7ja8zs x1qrby5j"]/a/span'
+        self.post_time_el_xpath = './/span[@class="x4k7w5x x1h91t0o x1h9r5lt xv2umb2 x1beo9mf xaigb6o x12ejxvf x3igimt xarpa2k xedcshv x1lytzrv x1t2pt76 x7ja8zs x1qrby5j x1jfb8zj"]/a/span'
         self.post_time_chars_xpath = './/span[@class="x16dsc37 x10wlt62 x6ikm8r x1rg5ohu xt0b8zv"]/span/span'
-        self.post_wait_time_hiden_tag_xpath = './/span[@class="x4k7w5x x1h91t0o x1h9r5lt x1jfb8zj xv2umb2 x1beo9mf xaigb6o x12ejxvf x3igimt xarpa2k xedcshv x1lytzrv x1t2pt76 x7ja8zs x1qrby5j"]/a/span/span'
+        # self.post_wait_time_hiden_tag_xpath = './/span[@class="x4k7w5x x1h91t0o x1h9r5lt xv2umb2 x1beo9mf xaigb6o x12ejxvf x3igimt xarpa2k xedcshv x1lytzrv x1t2pt76 x7ja8zs x1qrby5j x1jfb8zj"]/a/span/span'
         self.post_time_hiden_tag_xpath = './span'
         
-        self.post_content_xpath = './/div[@class="xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a"]/div'
+        self.post_content_xpath = './/div[@class="x11i5rnm xat24cr x1mh8g0r x1vvkbs xdj266r x126k92a"]/div'
         self.post_video_src_xpath = './/div[@class="om3e55n1 hf30pyar lq84ybu9"]//video[@class="mfclru0v pytsy3co b6ax4al1"]'
         self.post_pic_description_xpath = './/span[@class=x1lliihq x6ikm8r x10wlt62 x1n2onr6]/span'
         self.post_up_n_xpath = './/span[@class="xt0b8zv x1jx94hy xrbpyxo xl423tq"]/span/span'
         self.post_comment_n_xpath = './/div[@class="x6s0dn4 x78zum5 x2lah0s x17rw0jw"]/div'
         self.post_retweet_n_xpath = ''
 
-        self.comment_button_xpath = './/div[@class="x10wlt62 x6ikm8r x9jhf4c x30kzoy x13lgxp2 x168nmei"]//ul/following-sibling::div'
+        self.comment_button_xpath = './/div[@class="x168nmei x13lgxp2 x30kzoy x9jhf4c x6ikm8r x10wlt62"]//ul/following-sibling::div'
         self.comment_element_xpath = './/div[@class="x1jx94hy x12nagc"]/ul/li'
         
         
@@ -210,7 +210,7 @@ class FbExtractor(Extractor):
             try:
                 post_el = post_drive.find_element(By.XPATH, post_el_xpath) 
                 if post_drive != self.driver: # the first post is drived by the post list, only get the first post's div is ok, it's time el has a different mode than other posts. 
-                    test_content = post_el.find_element(By.XPATH, self.post_wait_time_hiden_tag_xpath)   # a post's div may be find while it's elements are all unavailable, so must check the post's time element as well.
+                    test_content = post_el.find_element(By.XPATH, self.post_time_el_xpath)   # a post's div may be find while it's elements are all unavailable, so must check the post's time element as well.
                 self.post_failed = 0
                 break                
             except (NoSuchElementException, StaleElementReferenceException):
@@ -284,6 +284,8 @@ class FbExtractor(Extractor):
             else:
                 post.uuid = str(util.gen_uuid(util.get_rand_char(8)))
             post.account = account.name
+            
+            # if post.comment_num>config.comment_threshold:
             if account.crawling_comment_flag and post.today_flag==0 and post.comment_num>config.comment_threshold:
                 post.comment_flag = 1
                 comment_list.extend(self.extract_post_comment(self.post_el, post.uuid, config.comment_max_count))  
