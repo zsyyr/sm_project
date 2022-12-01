@@ -31,8 +31,8 @@ authorization:
   email_pwd: 1
   cookies: 1
 
-platform_list: ['TW']
-# platform_list: ['FB', 'TW']
+# platform_list: ['TW']
+platform_list: ['FB', 'TW']
 
 
 FB:
