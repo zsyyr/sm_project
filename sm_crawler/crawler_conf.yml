@@ -18,7 +18,7 @@ remote_debugger:
     windows: ".\\chrome.exe --remote-debugging-port=9222 --user-data-dir='D:\\temp'"
 
 webdriver_tool_path:
-  chrome: "driver_tools/chromedriver-105"
+  chrome: "driver_tools/chromedriver"
   edge: 
   firefox: 
 
@@ -31,17 +31,19 @@ authorization:
   email_pwd: 1
   cookies: 1
 
-platform_list: ['FB', 'TW']
+platform_list: ['TW']
+# platform_list: ['FB', 'TW']
+
 
 FB:
-  accounts: ['cnn', 'bbc', 'Reuters', 'FoxNews', 'demorgen', 'hln.be', 'nieuwsblad.be', 'destandaard']
+  accounts: ['cnn', 'bbc', 'Reuters', 'FoxNews', 'demorgen', 'lalibre.be','lechobe', 'lesoirbe/','destandaard', 'hln.be', 'nieuwsblad.be']
   sm_account_email: ""
   password: ""
   cookies_file: ""
   url: "https://www.facebook.com/"
 
 TW:
-  accounts: ['CNN', 'BBCWorld', 'business', 'POTUS', 'RishiSunak', 'SpeakerPelosi', 'BarackObama', 'MSNBC', 'nytimes', 'FoxNews', 'alexanderdecroo', 'tijd', 'demorgen', 'HLN_BE', 'VTMNIEUWS', 'Nieuwsblad_be', 'vrtnws', 'destandaard']
+  accounts: ['CNN', 'BBCWorld', 'business', 'POTUS', 'RishiSunak', 'SpeakerPelosi', 'BarackObama', 'MSNBC', 'nytimes', 'FoxNews', 'lecho', 'lesoir', 'lalibrebe', 'demorgen', 'destandaard', 'search?q=Belgium&src=typed_query&f=top', 'search?q=china&src=typed_query']
   sm_account_email: ""
   password: ""
   cookies_file: ""
@@ -62,7 +64,7 @@ WB:
   url: "https://weibo.com/"
 
 
-daily_start_hour: '09:25'
+daily_start_hour: '02:00'
 
 stop_date: 2    #不建议修改，一般设置为2天：当天的post存入today库中，作为判断当天有无热点新闻之用；第二天的存入yesterday库中，因为其up、comment、retweet数量已经稳定。
 

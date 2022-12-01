@@ -13,7 +13,7 @@ services:
       
 
   mongodb:
-    image: mongo:5.0
+    image: mongo:4.4.18
     container_name: sm_docker_mongo
     restart: always
     ports:
