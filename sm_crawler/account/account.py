@@ -1,6 +1,7 @@
 class Account():
     def __init__(self, name, platform, url, stop_date, crawling_comment_flag=1):
         self.name = name
+        self.type = 'account'
         self.nickname = ''
         self.id = 0
         self.platform = platform

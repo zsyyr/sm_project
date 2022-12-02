@@ -33,11 +33,14 @@ class CrawlingConfig:
         self.remote_driver_selenium_grid_url = self.get_remote_driver_selenium_grid_url()
         
         self.platform_info_list = self.get_platform_info_list()
+        self.search_keyword_list = self.get_tw_search_keyword_list()
+        self.keywords_flag = self.get_keywords_flag()
         self.stop_date = self.get_stop_date()
         self.daily_task_account_list = self.get_daily_task_account_list()
         self.daily_start_hour = self.get_daily_start_hour()
         self.single_task_dict = self.get_single_task_dict()
         self.single_task_account_list = self.get_single_taskt_account_list()
+        self.search_keyword_account_list = self.get_search_keyword_account_list()
         
         self.comment_threshold = self.get_comment_threshold()
         self.comment_max_count = self.get_comment_max_count()
@@ -66,6 +69,12 @@ class CrawlingConfig:
     def get_platform_info_list(self):
         return [PlatformInfo(platform, self.config_dict[platform]) for platform in self.config_dict['platform_list']]
   
+    def get_tw_search_keyword_list(self):
+        return self.config_dict['TW_Search_KeyWords']
+    
+    def get_keywords_flag(self):
+        return self.config_dict['keywords_flag']
+  
     def get_remote_driver_flag(self):
         return self.config_dict['remote_driver']['flag']
 
@@ -79,15 +88,27 @@ class CrawlingConfig:
         return self.config_dict['remote_debugger']['address']
 
     def get_daily_task_account_list(self):
-            account_info_list = []
-            for platform in self.platform_info_list:                
-                for config_account in platform.account_list:
-                    account = Account(config_account, 
-                                      platform.name, 
-                                      platform.url+config_account, 
-                                      self.stop_date)
-                    account_info_list.append(account)
-            return account_info_list
+        account_info_list = []
+        for platform in self.platform_info_list:                
+            for config_account in platform.account_list:
+                account = Account(config_account, 
+                                    platform.name, 
+                                    platform.url+config_account, 
+                                    self.stop_date)
+                account_info_list.append(account)
+        return account_info_list
+
+    def get_search_keyword_account_list(self):
+        search_keyword_account_list = []
+        for keyword in self.search_keyword_list:
+            account = Account('tw_search'+keyword,
+                              'TW',
+                              f'https://twitter.com/search?q={keyword}&src=typed_query&f=top',
+                              200,
+                              0)  
+            account.type = 'keyword'
+            search_keyword_account_list.append(account)
+        return search_keyword_account_list
 
     def get_daily_start_hour(self):
         return self.config_dict['daily_start_hour']

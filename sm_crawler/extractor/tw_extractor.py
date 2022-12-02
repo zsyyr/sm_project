@@ -293,6 +293,8 @@ class TwExtractor(Extractor):
                 post.uuid = str(util.gen_uuid(post.content))
             else:
                 post.uuid = str(util.gen_uuid(util.get_rand_char(8)))
+
+            post.type = account.type
             
             if account.crawling_comment_flag and post.today_flag==0 and post.comment_num>config.comment_threshold:
                 post.comment_flag = 1

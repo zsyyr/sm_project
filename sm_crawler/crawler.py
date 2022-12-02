@@ -39,6 +39,8 @@ class Crawler:
                 self.account_list = self.config.single_task_account_list
             elif self.config.task_mode == 'daily_task':
                 self.account_list = self.config.daily_task_account_list
+            if self.config.keywords_flag:
+                self.account_list.extend(self.config.search_keyword_account_list)
             [logger.info(sm_account.url) for sm_account in self.account_list]
         except Exception as e:
             logger.exception(e)

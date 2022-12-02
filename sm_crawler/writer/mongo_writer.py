@@ -14,6 +14,7 @@ class MongoWriter(Writer):
         self.db_today = self.client['today']
         self.db_yesterday = self.client['yesterday']
         self.db_comment = self.client['comment']
+        self.db_keyword = self.client['keyword']
         
     def mongodb_connect(self):
         try:
@@ -35,6 +36,8 @@ class MongoWriter(Writer):
         try:   
             new_post_list = copy.deepcopy(post_list)
             for post in new_post_list:
+                if post['type'] == 'keyword':
+                    db = self.db_keyword
                 if post['today_flag']:
                     db = self.db_today
                 else:

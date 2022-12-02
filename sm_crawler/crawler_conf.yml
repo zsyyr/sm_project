@@ -34,6 +34,8 @@ authorization:
 # platform_list: ['TW']
 platform_list: ['FB', 'TW']
 
+TW_Search_KeyWords: ['china', 'belgium']  # now just support twitter search keywords
+keywords_flag: 1
 
 FB:
   accounts: ['cnn', 'bbc', 'Reuters', 'FoxNews', 'demorgen', 'lalibre.be','lechobe', 'lesoirbe/','destandaard', 'hln.be', 'nieuwsblad.be']
@@ -43,7 +45,7 @@ FB:
   url: "https://www.facebook.com/"
 
 TW:
-  accounts: ['CNN', 'BBCWorld', 'business', 'POTUS', 'RishiSunak', 'SpeakerPelosi', 'BarackObama', 'MSNBC', 'nytimes', 'FoxNews', 'lecho', 'lesoir', 'lalibrebe', 'demorgen', 'destandaard', 'search?q=Belgium&src=typed_query&f=top', 'search?q=china&src=typed_query']
+  accounts: ['CNN', 'BBCWorld', 'business', 'POTUS', 'RishiSunak', 'SpeakerPelosi', 'BarackObama', 'MSNBC', 'nytimes', 'FoxNews', 'lecho', 'lesoir', 'lalibrebe', 'demorgen', 'destandaard']
   sm_account_email: ""
   password: ""
   cookies_file: ""
@@ -74,29 +76,29 @@ single_task_config:                     #single task
       name: 'cnn'
       platform: 'FB'
       url: 'https://www.facebook.com/cnn'  
-      stop_date: 2
+      stop_date: 1
       crawling_comment_flag: 1
       date:
         since_date: ""
         end_date: ""
-    search-china:
-      name: 'search-china'
-      platform: 'TW'
-      url: 'https://twitter.com/search?q=china&src=typed_query'  
-      stop_date: 200
-      crawling_comment_flag: 0
-      date:
-        begin_date: ""
-        end_date: ""      
-    search-belgium:
-      name: 'search-belgium'
-      platform: 'TW'
-      url: 'https://twitter.com/search?q=Belgium&src=typed_query&f=top'  
-      stop_date: 200
-      crawling_comment_flag: 0
-      date:
-        begin_date: ""
-        end_date: "" 
+    # search-china:
+    #   name: 'search-china'
+    #   platform: 'TW'
+    #   url: 'https://twitter.com/search?q=china&src=typed_query'  
+    #   stop_date: 200
+    #   crawling_comment_flag: 0
+    #   date:
+    #     begin_date: ""
+    #     end_date: ""      
+    # search-belgium:
+    #   name: 'search-belgium'
+    #   platform: 'TW'
+    #   url: 'https://twitter.com/search?q=Belgium&src=typed_query&f=top'  
+    #   stop_date: 200
+    #   crawling_comment_flag: 0
+    #   date:
+    #     begin_date: ""
+    #     end_date: "" 
     # POTUS:
     #   name: 'POTUS'
     #   platform: 'TW'
